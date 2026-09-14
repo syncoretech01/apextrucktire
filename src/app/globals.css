@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   DESIGN TOKENS
+   Single source of truth. Tailwind v4 exposes each @theme token as a utility
+   (bg-base-0, text-ink-2, font-display, ease-out-expo, text-display-xl …).
+   Motion tokens are mirrored in src/lib/motion/tokens.ts for GSAP/anime.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Wipe the default palette — every color on this site is deliberate. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Base — near-black with a blue-cold cast */
+  --color-base-0: #07090d;
+  --color-base-1: #0b0f14;
+  --color-surface: #12171f;
+  --color-surface-2: #1a212b;
+  --color-surface-3: #232c38;
+
+  /* Lines / hairlines */
+  --color-line: rgb(143 163 184 / 0.14);
+  --color-line-strong: rgb(143 163 184 / 0.28);
+
+  /* Ink (text) — all verified ≥ 4.5:1 on base-0 and surface */
+  --color-ink: #f2f5f8;
+  --color-ink-2: #c5cfda;
+  --color-ink-3: #8fa3b8;
+  --color-ink-4: #7a8899;
+
+  /* Accent — signal orange. Means "act here". 6.99:1 on base-0. */
+  --color-accent: #ff6b1a;
+  --color-accent-hot: #ff8a3d;
+  --color-accent-deep: #c24e0c;
+  --color-accent-dim: rgb(255 107 26 / 0.12);
+  --color-on-accent: #0b0f14;
+
+  /* Steel — cold secondary */
+  --color-steel: #8fa3b8;
+  --color-steel-2: #b8c6d4;
+  --color-steel-dim: rgb(143 163 184 / 0.1);
+
+  /* Status */
+  --color-live: #35d07f;
+
+  /* Type */
+  --font-display: var(--font-archivo), "Archivo", "Arial Narrow", Impact, sans-serif;
+  --font-sans: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Fluid type scale (min → max between 360px and 1440px) */
+  --text-display-xl: clamp(2.75rem, 1rem + 5.2vw, 6rem);
+  --text-display-xl--line-height: 0.9;
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-lg: clamp(2.5rem, 1.2rem + 4.2vw, 5.25rem);
+  --text-display-lg--line-height: 0.92;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-md: clamp(2rem, 1.1rem + 2.8vw, 3.75rem);
+  --text-display-md--line-height: 0.95;
+  --text-display-md--letter-spacing: -0.015em;
+  --text-display-sm: clamp(1.625rem, 1.1rem + 2vw, 2.75rem);
+  --text-display-sm--line-height: 1;
+  --text-display-sm--letter-spacing: -0.01em;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-lead--line-height: 1.55;
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.4;
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.18em;
+
+  /* Spacing additions */
+  --spacing-gutter: clamp(1rem, 4vw, 3.5rem);
+  --spacing-section: clamp(5rem, 12vw, 11rem);
+  --spacing-section-sm: clamp(3rem, 7vw, 6rem);
+  --container-content: 80rem;
+  --container-prose: 40rem;
+
+  /* Radius — industrial: mostly square, softened corners on interactive */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-pill: 999px;
+
+  /* Easing scale — the site's motion signature */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+  --ease-snap: cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Shadows */
+  --shadow-glow-accent: 0 0 0 1px rgb(255 107 26 / 0.35), 0 12px 40px -8px rgb(255 107 26 / 0.45);
+  --shadow-panel: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -30px rgb(0 0 0 / 0.8);
+
+  /* Keyframes registered as animate-* utilities */
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-pulse-dot: pulse-dot 2.4s var(--ease-soft) infinite;
+  --animate-pulse-accent: pulse-accent 2.4s var(--ease-soft) infinite;
+  --animate-grain: grain 0.7s steps(3) infinite;
+}
+
+/* Duration scale (ms). Use as duration-(--dur-md) or in plain CSS. */
+:root {
+  --dur-xs: 120ms;
+  --dur-sm: 200ms;
+  --dur-md: 320ms;
+  --dur-lg: 560ms;
+  --dur-xl: 900ms;
+  --dur-xxl: 1400ms;
+  --nav-height: 4.5rem;
+  color-scheme: dark;
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(53 208 127 / 0.55); }
+  60% { box-shadow: 0 0 0 8px rgb(53 208 127 / 0); }
+}
+@keyframes pulse-accent {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(255 107 26 / 0.5); }
+  60% { box-shadow: 0 0 0 10px rgb(255 107 26 / 0); }
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-2%, 1%); }
+  66% { transform: translate(1%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ---------------------------------------------------------------------------
+   BASE
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    background: var(--color-base-0);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: auto; /* ScrollSmoother owns scrolling */
+  }
+  body {
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  /* Focus rings that survive the dark theme */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+  /* Display face is an uppercase-only glyph subset (see app/fonts.ts). */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-stretch: 78%;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a { text-underline-offset: 0.2em; }
+  strong { font-weight: 700; color: var(--color-ink); }
+  button { cursor: pointer; }
+  input, textarea, select { font: inherit; color: inherit; }
+  img, svg, video, canvas { display: block; max-width: 100%; }
+  [hidden] { display: none !important; }
+}
+
+/* ---------------------------------------------------------------------------
+   COMPONENT UTILITIES
+--------------------------------------------------------------------------- */
+@utility container-x {
+  width: 100%;
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-stretch: 118%;
+  font-weight: 600;
+  font-size: var(--text-eyebrow);
+  line-height: var(--text-eyebrow--line-height);
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+/* Display typography helpers */
+@utility display-tight {
+  font-family: var(--font-display);
+  font-stretch: 78%;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+@utility display-wide {
+  font-family: var(--font-display);
+  font-stretch: 122%;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Film grain — fixed overlay, very low opacity, cheap SVG noise */
+@utility grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: -10%;
+  z-index: 80;
+  opacity: 0.055;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+/* Radial vignette for section backgrounds */
+@utility vignette {
+  background-image:
+    radial-gradient(120% 80% at 50% 0%, rgb(143 163 184 / 0.07) 0%, transparent 60%),
+    radial-gradient(100% 60% at 50% 100%, rgb(0 0 0 / 0.6) 0%, transparent 70%);
+}
+
+/* Tread-pattern strip: use as a divider or as a mask-image via tread-mask */
+@utility tread-strip {
+  height: 6px;
+  background-image:
+    repeating-linear-gradient(
+      100deg,
+      var(--color-surface-2) 0 10px,
+      transparent 10px 18px
+    );
+  mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent);
+}
+@utility tread-mask {
+  mask-image: repeating-linear-gradient(100deg, black 0 18px, transparent 18px 26px);
+  -webkit-mask-image: repeating-linear-gradient(100deg, black 0 18px, transparent 18px 26px);
+}
+
+/* Hairline */
+@utility hairline {
+  border-color: var(--color-line);
+}
+
+/* Anchor offset so scrollTo lands under the fixed nav */
+@utility scroll-anchor {
+  scroll-margin-top: var(--nav-height);
+}
+
+/* Technical label — mono, uppercase, used in callouts and diagrams */
+@utility tech-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-steel-2);
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION — every CSS animation has a defined static state
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes scroll-hint {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(220%); }
+}
+
+/* Hero copy is hidden until GSAP reveals it after the assembly snap — but
+   only for the devices that get that choreography (fine pointer, motion
+   allowed, scripting on). Phones, reduced-motion users, crawlers and no-JS
+   visitors see the headline and the Call button at first paint. */
+@media (scripting: enabled) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-hero-copy] { opacity: 0; visibility: hidden; }
+}
+
+@keyframes ping-soft {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}

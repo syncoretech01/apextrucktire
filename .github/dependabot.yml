@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Los_Angeles"
+    open-pull-requests-limit: 5
+    versioning-strategy: "increase"
+    groups:
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      three:
+        patterns: ["three", "@types/three", "@react-three/*", "postprocessing"]
+      motion:
+        patterns: ["gsap", "@gsap/react", "animejs"]
+      tooling:
+        patterns: ["eslint*", "@eslint/*", "typescript", "tailwindcss", "@tailwindcss/*", "postcss", "playwright", "sharp"]
+    labels: ["dependencies"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
