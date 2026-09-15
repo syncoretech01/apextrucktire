@@ -48,7 +48,12 @@ export function SiteHeader() {
     >
       <div className="container-x flex h-full items-center justify-between gap-6">
         <a href="#hero" className="shrink-0" aria-label={`${SITE.name} home`}>
-          <Logo />
+          <span className="block sm:hidden">
+            <Logo height={30} priority />
+          </span>
+          <span className="hidden sm:block">
+            <Logo height={38} priority />
+          </span>
         </a>
 
         <nav aria-label="Primary" className="hidden lg:block">

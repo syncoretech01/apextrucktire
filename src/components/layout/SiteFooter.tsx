@@ -49,7 +49,7 @@ export function SiteFooter() {
       {/* NAP + navigation */}
       <div className="container-x grid gap-10 py-14 md:grid-cols-12">
         <div className="md:col-span-4">
-          <Logo />
+          <Logo height={52} />
           <p className="mt-5 max-w-[30ch] text-small text-ink-3">
             Commercial truck tire service for the Inland Empire freight corridor — roadside, sales and
             installation from Bloomington, CA.

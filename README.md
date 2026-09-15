@@ -83,7 +83,7 @@ public/
   images/              hero posters, placeholder section photos
   hero-seq/            32-frame WebP explode sequence (landscape + portrait) for phones
   fonts/               self-hosted Archivo (display, uppercase subset) + Manrope
-  brand/               original wordmark/icon PNGs
+  brand/               the brand wordmark/icon PNGs (on-dark + on-light, all sizes) — used as-is in header, footer, favicons, OG
 ```
 
 ## Swap points (placeholders → real content)
@@ -104,6 +104,7 @@ Everything below is clearly marked in code with `PLACEHOLDER` or lives in `src/l
 | Shop hours | `site.ts → hours`, `SiteFooter.tsx`, `JsonLd.tsx` | Keep the three in sync. |
 | Service-area cities / corridor | `site.ts → serviceArea`, `ServiceArea.tsx → CITIES` | The map is a stylized diagram, not survey data. |
 | Hero headline / lead | `components/hero/Hero.tsx` | Display face is an uppercase-only subset — see Fonts. |
+| Logo | `public/brand/*` → `components/ui/Logo.tsx`, `app/icon.png`, `app/apple-icon.png`, `app/favicon.ico` | The brand PNGs are used unchanged; only resized. |
 | OG image | `public/og.png` via `node scripts/brand-assets.mjs` | |
 | Email templates | `lib/server/email.ts` | |
 | security.txt expiry | `public/.well-known/security.txt` | Bump `Expires` yearly. |
