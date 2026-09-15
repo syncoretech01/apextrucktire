@@ -1,0 +1,88 @@
+{
+  "/images/hero-poster-assembled-landscape.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1280,
+    1536,
+    1920
+  ],
+  "/images/hero-poster-assembled-portrait.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1080
+  ],
+  "/images/hero-poster-exploded-landscape.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1280,
+    1536,
+    1920
+  ],
+  "/images/hero-poster-exploded-portrait.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1080
+  ],
+  "/images/services/install-shop-bay.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "/images/services/roadside-trailer-dual.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "/images/services/sales-tire-stock.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "/images/why/detail-compartments.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024
+  ],
+  "/images/why/truck-unit15.jpg": [
+    360,
+    414,
+    640,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "/images/why/yard-dusk.jpg": [
+    360,
+    414,
+    640,
+    768,
+    819
+  ]
+}

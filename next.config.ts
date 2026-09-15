@@ -25,10 +25,13 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   images: {
-    formats: ["image/avif", "image/webp"],
+    // Variants are pre-rendered by scripts/responsive.mjs and picked by the
+    // loader — no request-time optimizer (Vercel's is metered and 402s once
+    // the quota is spent, which blanked every phone-width photo).
+    loader: "custom",
+    loaderFile: "./src/lib/imageLoader.ts",
     deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536, 1920],
     imageSizes: [64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   transpilePackages: ["three"],
   // The page renders dynamically (per-request CSP nonce), and Next 15.2+
@@ -51,6 +54,11 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/hero-seq/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        // Filenames are content-specific (README → Swap points), so variants can be immutable.
+        source: "/images/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
       {

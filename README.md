@@ -29,6 +29,7 @@ Other scripts:
 | `pnpm lighthouse` | Lighthouse mobile + desktop against a running `pnpm start` |
 | `node scripts/smoke-api.mjs` | Exercises every layer of the inquiry endpoint hardening against `pnpm dev` |
 | `node scripts/photos.mjs` | Crops/exports the section photography from `../generated-images/` |
+| `node scripts/responsive.mjs` | Pre-renders the WebP width variants + manifest that `next/image` serves (run after `photos.mjs` / `render:hero`) |
 | `node scripts/audio.mjs` | Normalises/encodes the opt-in background track from `../generated-audio/` (needs `ffmpeg`) |
 | `node scripts/placeholders.mjs` | Regenerates the (superseded) placeholder section imagery |
 | `node scripts/brand-assets.mjs` | Regenerates favicon, apple-icon and the OG image from the brand PNGs + fleet photo |
@@ -79,11 +80,12 @@ src/
     content.ts         all copy and data that the business will edit
     inquirySchema.ts   Zod schema shared by client + server
     analytics.ts       track() + trackConversion()
+    imageLoader.ts     next/image loader → pre-rendered WebP variants (images.manifest.json, from scripts/responsive.mjs)
     sound.ts           the one background-music player + useSound() store behind every SoundToggle
     motion/            gsap (core + lazy plugin loaders), anime barrel, tokens, Reveal, device tier, reduced motion
     server/            token, ratelimit, turnstile, sanitize, email (server-only)
 public/
-  images/              hero posters, placeholder section photos
+  images/              hero posters + section photos, each with its <name>-<width>.webp variants
   hero-seq/            32-frame WebP explode sequence (landscape + portrait) for phones
   audio/               opt-in background track (loaded only when a visitor turns sound on)
   fonts/               self-hosted Archivo (display, uppercase subset) + Manrope
@@ -102,7 +104,7 @@ Everything below is clearly marked in code with `PLACEHOLDER` or lives in `src/l
 | Tire recommendations by position | `content.ts → POSITIONS` | Model names are examples — match current stock. |
 | Testimonials | `content.ts → TESTIMONIALS` | **Placeholder quotes. Replace with real, permissioned quotes before launch — never invent reviews.** |
 | Differentiators | `content.ts → DIFFERENTIATORS` | |
-| Section photography | `public/images/services/*.jpg` (3:2, focal point via `image.position`), `public/images/why/yard-dusk.jpg` (4:5), `why/truck-unit15.jpg` (16:10), `why/detail-compartments.jpg` (1:1), `fleet-side-profile.jpg` (OG source). Filenames are content-specific on purpose — `minimumCacheTTL` is 30 days, so a new photo needs a new name | Exported by `node scripts/photos.mjs` from the full-size sources in `../generated-images/` (prompts: `IMAGE-PROMPTS.md`). Alt text lives in `content.ts` and `WhyApex.tsx`. |
+| Section photography | `public/images/services/*.jpg` (3:2, focal point via `image.position`), `public/images/why/yard-dusk.jpg` (4:5), `why/truck-unit15.jpg` (16:10), `why/detail-compartments.jpg` (1:1), `fleet-side-profile.jpg` (OG source). Filenames are content-specific on purpose — `/images/*` is served immutable, so a new photo needs a new name | Exported by `node scripts/photos.mjs` from the full-size sources in `../generated-images/` (prompts: `IMAGE-PROMPTS.md`), then `node scripts/responsive.mjs` for the width variants. Alt text lives in `content.ts` and `WhyApex.tsx`. |
 | Background track | `public/audio/already-rolling-brand-bed.mp3` via `node scripts/audio.mjs`; path in `lib/sound.ts` | Off by default, opt-in via the Sound toggle in the header (left of the 877 button); never autoplays. `/audio/*` is immutable — a new track needs a new filename. Brief: `MUSIC-PROMPTS.md` → M1. |
 | Geo coordinates | `site.ts → address.geo` | Approximate — confirm against Google Business Profile. |
 | Social profiles | `site.ts → sameAs` | Empty array → omitted from schema until filled. |
@@ -113,6 +115,10 @@ Everything below is clearly marked in code with `PLACEHOLDER` or lives in `src/l
 | OG image | `public/og-fleet.png` via `node scripts/brand-assets.mjs` | Rename when the photo changes (social scrapers cache by URL). |
 | Email templates | `lib/server/email.ts` | |
 | security.txt expiry | `public/.well-known/security.txt` | Bump `Expires` yearly. |
+
+### Images
+
+`next/image` runs with a custom loader (`next.config.ts → images.loader`, `src/lib/imageLoader.ts`): every `src`/`width` the component asks for maps to a WebP file pre-rendered by `node scripts/responsive.mjs` (`<name>-<width>.webp` next to the source JPEG, widths from `images.deviceSizes`, never upscaled, listed in `src/lib/images.manifest.json`). Nothing is resized at request time, so the site does not depend on Vercel's metered image optimizer — that returned `402 OPTIMIZED_IMAGE_REQUEST_PAYMENT_REQUIRED` once the plan's quota was spent and blanked every phone-width photo. The header/footer wordmark is the 480 px brand PNG served as-is (`unoptimized`). After changing any photo or poster: run `photos.mjs` / `render:hero`, then `responsive.mjs`, commit the outputs.
 
 ### Fonts
 
