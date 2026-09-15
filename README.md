@@ -4,7 +4,7 @@ Single-page marketing site for Apex Truck Tire (Bloomington, CA): 24/7 mobile tr
 
 - **Stack:** Next.js 15.5 (App Router, strict TypeScript), Tailwind CSS v4 (token layer in `src/app/globals.css`), GSAP 3.15 (ScrollTrigger, ScrollSmoother, SplitText, Flip, Draggable, InertiaPlugin, CustomEase), anime.js 4, Three.js via react-three-fiber + drei + postprocessing, Zod 4 (`zod/mini`), Resend, Upstash Redis, Cloudflare Turnstile.
 - **Deploy target:** Vercel.
-- **Docs:** [SECURITY.md](SECURITY.md) (hardening), [MOTION.md](MOTION.md) (animation system, hero tuning).
+- **Docs:** [SECURITY.md](SECURITY.md) (hardening), [MOTION.md](MOTION.md) (animation system, hero tuning), [IMAGE-PROMPTS.md](IMAGE-PROMPTS.md) (photography briefs), [MUSIC-PROMPTS.md](MUSIC-PROMPTS.md) (music / song briefs for video, ads, hold line).
 
 ## Quick start
 
@@ -29,6 +29,7 @@ Other scripts:
 | `pnpm lighthouse` | Lighthouse mobile + desktop against a running `pnpm start` |
 | `node scripts/smoke-api.mjs` | Exercises every layer of the inquiry endpoint hardening against `pnpm dev` |
 | `node scripts/photos.mjs` | Crops/exports the section photography from `../generated-images/` |
+| `node scripts/audio.mjs` | Normalises/encodes the opt-in background track from `../generated-audio/` (needs `ffmpeg`) |
 | `node scripts/placeholders.mjs` | Regenerates the (superseded) placeholder section imagery |
 | `node scripts/brand-assets.mjs` | Regenerates favicon, apple-icon and the OG image from the brand PNGs + fleet photo |
 
@@ -71,18 +72,20 @@ src/
     hero/              3D exploded view: geometry, materials, scene, callouts, poster, phone sequence
     sections/          TrustBar, Services, RoadsideFlow, TirePositions, ServiceArea, WhyApex, Testimonials, InquirySection
     form/              multi-step inquiry form, field primitives, Turnstile glue, lazy loader
-    layout/            header, footer, sticky call bar, ScrollSmoother provider, analytics + consent, JSON-LD
+    layout/            header, footer, sticky call bar, sound toggle, ScrollSmoother provider, analytics + consent, JSON-LD
     ui/                buttons, logo lockup, section header
   lib/
     site.ts            NAP — the single source of truth for phone/address/email/hours
     content.ts         all copy and data that the business will edit
     inquirySchema.ts   Zod schema shared by client + server
     analytics.ts       track() + trackConversion()
+    sound.ts           the one background-music player + useSound() store behind every SoundToggle
     motion/            gsap (core + lazy plugin loaders), anime barrel, tokens, Reveal, device tier, reduced motion
     server/            token, ratelimit, turnstile, sanitize, email (server-only)
 public/
   images/              hero posters, placeholder section photos
   hero-seq/            32-frame WebP explode sequence (landscape + portrait) for phones
+  audio/               opt-in background track (loaded only when a visitor turns sound on)
   fonts/               self-hosted Archivo (display, uppercase subset) + Manrope
   brand/               the brand wordmark/icon PNGs (on-dark + on-light, all sizes) — used as-is in header, footer, favicons, OG
 ```
@@ -100,6 +103,7 @@ Everything below is clearly marked in code with `PLACEHOLDER` or lives in `src/l
 | Testimonials | `content.ts → TESTIMONIALS` | **Placeholder quotes. Replace with real, permissioned quotes before launch — never invent reviews.** |
 | Differentiators | `content.ts → DIFFERENTIATORS` | |
 | Section photography | `public/images/services/*.jpg` (3:2, focal point via `image.position`), `public/images/why/yard-dusk.jpg` (4:5), `why/truck-unit15.jpg` (16:10), `why/detail-compartments.jpg` (1:1), `fleet-side-profile.jpg` (OG source). Filenames are content-specific on purpose — `minimumCacheTTL` is 30 days, so a new photo needs a new name | Exported by `node scripts/photos.mjs` from the full-size sources in `../generated-images/` (prompts: `IMAGE-PROMPTS.md`). Alt text lives in `content.ts` and `WhyApex.tsx`. |
+| Background track | `public/audio/already-rolling-brand-bed.mp3` via `node scripts/audio.mjs`; path in `lib/sound.ts` | Off by default, opt-in via the Sound toggle in the header (left of the 877 button); never autoplays. `/audio/*` is immutable — a new track needs a new filename. Brief: `MUSIC-PROMPTS.md` → M1. |
 | Geo coordinates | `site.ts → address.geo` | Approximate — confirm against Google Business Profile. |
 | Social profiles | `site.ts → sameAs` | Empty array → omitted from schema until filled. |
 | Shop hours | `site.ts → hours`, `SiteFooter.tsx`, `JsonLd.tsx` | Keep the three in sync. |
@@ -139,6 +143,7 @@ Outputs: `public/images/hero-poster-{exploded,assembled}-{landscape,portrait}.jp
 | `form_step_dropoff` | Tab hidden with a started, unsubmitted form | `step`, `emergency` |
 | `form_submit` / `form_success` / `form_error` | Submission lifecycle | `emergency`, `service`, `status` |
 | `consent_update` | Consent decision | `analytics_storage` |
+| `sound_toggle` | Background music turned on/off | `on` |
 
 Google Ads: set the three `NEXT_PUBLIC_GADS_*` variables; `trackConversion("form")` fires on success. Wire `trackConversion("call")` to the click-to-call handlers if/when call conversions are configured in Ads (the hook is exported and a no-op until configured).
 

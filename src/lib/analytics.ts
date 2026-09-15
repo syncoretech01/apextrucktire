@@ -16,7 +16,8 @@ export type EventName =
   | "form_submit"
   | "form_success"
   | "form_error"
-  | "consent_update";
+  | "consent_update"
+  | "sound_toggle";
 
 type Params = Record<string, string | number | boolean | undefined>;
 

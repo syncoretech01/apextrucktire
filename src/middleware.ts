@@ -48,7 +48,7 @@ export const config = {
   matcher: [
     {
       // Everything except static assets and Next internals.
-      source: "/((?!_next/static|_next/image|favicon.ico|icon.png|apple-icon.png|fonts/|images/|hero-seq/|brand/|robots.txt|sitemap.xml).*)",
+      source: "/((?!_next/static|_next/image|favicon.ico|icon.png|apple-icon.png|fonts/|images/|hero-seq/|audio/|brand/|robots.txt|sitemap.xml).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },

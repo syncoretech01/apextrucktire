@@ -5,6 +5,7 @@ import { Logo } from "@/components/ui/Logo";
 import { ButtonLink, PhoneIcon } from "@/components/ui/Button";
 import { SITE } from "@/lib/site";
 import { track } from "@/lib/analytics";
+import { SoundToggle } from "@/components/layout/SoundToggle";
 
 const NAV = [
   { href: "#services", label: "Services" },
@@ -46,7 +47,7 @@ export function SiteHeader() {
         scrolled || open ? "border-b border-line bg-base-0/80 backdrop-blur-md" : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="container-x flex h-full items-center justify-between gap-6">
+      <div className="container-x flex h-full items-center justify-between gap-4 xl:gap-6">
         <a href="#hero" className="shrink-0" aria-label={`${SITE.name} home`}>
           <span className="block sm:hidden">
             <Logo height={30} priority />
@@ -57,12 +58,12 @@ export function SiteHeader() {
         </a>
 
         <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-7">
+          <ul className="flex items-center gap-4 xl:gap-7">
             {NAV.map((n) => (
               <li key={n.href}>
                 <a
                   href={n.href}
-                  className="font-display text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-ink-2 [font-stretch:112%] transition-colors duration-(--dur-sm) hover:text-ink"
+                  className="whitespace-nowrap font-display text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-ink-2 [font-stretch:112%] transition-colors duration-(--dur-sm) hover:text-ink"
                 >
                   {n.label}
                 </a>
@@ -72,14 +73,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-4 sm:flex">
-            <a
-              href={SITE.phone.local.href}
-              className="hidden font-mono text-[0.75rem] tracking-[0.06em] text-ink-3 transition-colors hover:text-ink xl:block"
-              onClick={() => track("click_to_call", { location: "header_local", number: SITE.phone.local.e164 })}
-            >
-              Local {SITE.phone.local.display}
-            </a>
+          <SoundToggle />
+          <div className="hidden sm:flex">
             <ButtonLink
               href={SITE.phone.primary.href}
               size="md"
