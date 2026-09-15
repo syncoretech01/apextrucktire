@@ -157,7 +157,7 @@ export function RadioCards<T extends string>({
                 <span className={`size-2 rounded-pill transition-transform duration-(--dur-sm) ${checked ? "scale-100" : "scale-0"} ${o.accent ? "bg-accent" : "bg-steel-2"}`} />
               </span>
               <span className="min-w-0">
-                <span className={`block font-display text-[0.9rem] font-bold uppercase tracking-[0.06em] [font-stretch:105%] ${checked && o.accent ? "text-accent" : "text-ink"}`}>
+                <span className={`block break-words font-display text-[0.9rem] font-bold uppercase tracking-[0.06em] [font-stretch:105%] ${checked && o.accent ? "text-accent" : "text-ink"}`}>
                   {o.label}
                 </span>
                 {o.description && <span className="mt-0.5 block text-micro text-ink-3">{o.description}</span>}

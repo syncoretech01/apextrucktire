@@ -136,14 +136,16 @@ export function SiteFooter() {
         </nav>
       </div>
 
-      {/* Legal + credit */}
+      {/* Legal + credit. Bottom padding clears the StickyCall element so the
+          credit is never covered at the end of the page: the mobile bar is
+          ~4.75rem + safe-area, the desktop pill sits 1.5rem up and is ~2.75rem tall. */}
       <div className="border-t border-line">
-        <div className="container-x flex flex-col gap-3 py-6 text-micro text-ink-4 md:flex-row md:items-center md:justify-between">
+        <div className="container-x flex flex-col gap-3 pt-6 pb-[calc(6rem+env(safe-area-inset-bottom))] text-micro text-ink-4 md:flex-row md:items-center md:justify-between md:pb-[5.75rem]">
           <p>
             © {year} {SITE.legalName}. Serving {SITE.corridor} · San Bernardino &amp; Riverside Counties.
           </p>
-          <p className="flex items-center gap-4">
-            <a href="/.well-known/security.txt" className="hover:text-ink-2">
+          <p className="flex items-center gap-3 whitespace-nowrap">
+            <a href="/.well-known/security.txt" className="transition-colors hover:text-ink-2">
               Security
             </a>
             <span aria-hidden="true">·</span>
@@ -153,7 +155,7 @@ export function SiteFooter() {
                 href="https://syncoretech.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-display font-semibold uppercase tracking-[0.14em] text-accent [font-stretch:112%] underline decoration-accent/40 underline-offset-4 transition-colors hover:text-accent-hot hover:decoration-accent-hot"
+                className="font-semibold text-accent transition-colors hover:text-accent-hot"
               >
                 Syncore
               </a>

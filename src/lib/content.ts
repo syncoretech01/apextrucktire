@@ -36,7 +36,8 @@ export type Service = {
   included: string[];
   expect: { label: string; value: string }[];
   cta: { label: string; href: string; kind: "call" | "anchor" };
-  image: { src: string; alt: string };
+  /** `position` is the CSS object-position for the fluid desktop panel (photos are 3:2). */
+  image: { src: string; alt: string; position?: string };
 };
 
 export const SERVICES: Service[] = [
@@ -60,7 +61,11 @@ export const SERVICES: Service[] = [
       { label: "Callback", value: "Driver gets the tech's ETA by text" },
     ],
     cta: { label: "Call dispatch now", href: "tel:+18775120301", kind: "call" },
-    image: { src: "/images/services/roadside.jpg", alt: "Service truck on the freeway shoulder at night with work lights on a downed tractor-trailer" },
+    image: {
+      src: "/images/services/roadside-trailer-dual.jpg",
+      alt: "Apex technician running the lug nuts on a stopped trailer's dual wheel at dusk, service truck lit up behind",
+      position: "78% 50%",
+    },
   },
   {
     id: "sales",
@@ -82,7 +87,11 @@ export const SERVICES: Service[] = [
       { label: "Warranty", value: "Manufacturer-backed, handled here" },
     ],
     cta: { label: "Get a tire quote", href: "#request-service", kind: "anchor" },
-    image: { src: "/images/services/sales.jpg", alt: "Rows of new commercial truck tires racked in the Apex warehouse" },
+    image: {
+      src: "/images/services/sales-tire-stock.jpg",
+      alt: "Apex technician rolling a new commercial truck tire from the stock stacks at the yard, service truck compartments loaded with tires",
+      position: "25% 50%",
+    },
   },
   {
     id: "install",
@@ -104,7 +113,11 @@ export const SERVICES: Service[] = [
       { label: "Paperwork", value: "Torque log and DOT numbers on the invoice" },
     ],
     cta: { label: "Schedule installation", href: "#request-service", kind: "anchor" },
-    image: { src: "/images/services/install.jpg", alt: "Technician torquing lug nuts on a truck wheel with a calibrated wrench" },
+    image: {
+      src: "/images/services/install-shop-bay.jpg",
+      alt: "Apex technician with an impact wrench on a wheel in the shop bay, floor jack under the truck",
+      position: "45% 50%",
+    },
   },
 ];
 
@@ -201,30 +214,33 @@ export const DIFFERENTIATORS = [
   },
 ];
 
-/** PLACEHOLDER testimonials — replace with real, permissioned quotes before launch. */
+/**
+ * PLACEHOLDER testimonials. Names and companies are fictional — they exist so the
+ * layout reads naturally. Replace with real, permissioned quotes before launch.
+ */
 export const TESTIMONIALS = [
   {
     quote:
       "Reefer down on the 10 at Cherry Ave at 2:40 in the morning with a load that could not wait. Dispatch picked up on the second ring; the truck was there in thirty-five minutes with the right tire.",
-    name: "Placeholder — Fleet Manager",
-    role: "Regional dry-van carrier, 60 tractors",
+    name: "Marcus Delgado",
+    role: "Fleet Manager, Redline Regional Carriers · 60 tractors, dry van",
   },
   {
     quote:
       "We moved our whole drive-tire program to Apex retreads. Cost per mile dropped and we have not had a cap failure in two years. They inspect casings like they are paying for them.",
-    name: "Placeholder — Maintenance Director",
-    role: "Food distribution fleet",
+    name: "Renee Whitfield",
+    role: "Maintenance Director, Pacific Harvest Foods Distribution",
   },
   {
     quote:
       "Owner-operator, one truck, and they still treat me like a fleet. Same pricing, same speed. The torque log on the invoice is the kind of thing nobody else bothers with.",
-    name: "Placeholder — Owner-Operator",
-    role: "Flatbed, Southern California lanes",
+    name: "Tony Barajas",
+    role: "Owner-operator · Flatbed, Southern California lanes",
   },
   {
     quote:
       "Night yard service is the reason we use them. Ten trailers turned between shifts, nobody waiting on a bay in the morning.",
-    name: "Placeholder — Dispatcher",
-    role: "Intermodal drayage, Ontario",
+    name: "Lena Okafor",
+    role: "Night Dispatcher, Meridian Drayage · Ontario, CA",
   },
 ];

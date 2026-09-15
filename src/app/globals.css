@@ -296,6 +296,28 @@
   [data-hero-copy] { opacity: 0; visibility: hidden; }
 }
 
+/* Short viewports (laptops with browser chrome, small landscape screens).
+   The hero copy is bottom-anchored, so anything taller than the viewport grows
+   UP into the fixed header. Scale the display size and spacing down instead. */
+@media (min-width: 40rem) and (max-height: 800px) {
+  [data-hero-copy] {
+    padding-top: calc(var(--nav-height) + 1rem);
+    padding-bottom: max(4vh, 2.5rem);
+  }
+  [data-hero-copy] h1 {
+    font-size: clamp(2.25rem, 0.5rem + 4.2vw, 4.5rem);
+  }
+  [data-hero-copy] [data-hero-lead] {
+    margin-top: 1rem;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+  [data-hero-copy] [data-hero-ctas] {
+    margin-top: 1.25rem;
+  }
+}
+
+
 @keyframes ping-soft {
   0% { transform: scale(0.6); opacity: 0.9; }
   100% { transform: scale(2.2); opacity: 0; }

@@ -250,21 +250,22 @@ export function Hero() {
       <div ref={copyOuter} className="relative z-20 h-full">
       <div
         ref={copy}
-        className="container-x flex h-full flex-col justify-end pb-[max(7vh,4.5rem)] pt-[calc(var(--nav-height)+2rem)]"
+        className="container-x flex h-full flex-col justify-end pb-[max(5vh,3rem)] pt-[calc(var(--nav-height)+1rem)] sm:pt-[calc(var(--nav-height)+2rem)] md:pb-[max(7vh,4.5rem)]"
         data-hero-copy
       >
         <div className="max-w-[47rem] portrait:max-w-none">
-          <p className="eyebrow mb-5 text-accent" data-reveal>
-            Bloomington, CA · I-10 / I-215 / I-15 · Inland Empire
+          <p className="eyebrow mb-3 text-accent sm:mb-5" data-reveal>
+            <span className="sm:hidden">Bloomington, CA · Inland Empire</span>
+            <span className="hidden sm:inline">Bloomington, CA · I-10 / I-215 / I-15 · Inland Empire</span>
           </p>
           <h1 ref={title} id="hero-title" className="display-tight text-display-xl text-ink">
             Blown tire. Loaded trailer. 3 a.m. We&rsquo;re already rolling.
           </h1>
-          <p className="mt-6 max-w-[36rem] text-lead text-ink-2" data-reveal>
+          <p className="mt-4 max-w-[36rem] text-body text-ink-2 sm:mt-6 sm:text-lead" data-reveal data-hero-lead>
             24/7 mobile truck tire service across the Inland Empire freight corridor. One call gets a
             truck dispatched to your shoulder, yard, or dock — with the tire on it.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center" data-reveal>
+          <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center" data-reveal data-hero-ctas>
             <ButtonLink
               href={SITE.phone.primary.href}
               size="lg"
@@ -279,7 +280,7 @@ export function Hero() {
             </ButtonLink>
           </div>
           <div data-reveal>
-            <StatusStrip className="mt-7" />
+            <StatusStrip className="mt-5 sm:mt-7" />
           </div>
         </div>
       </div>

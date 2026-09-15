@@ -120,6 +120,7 @@ function ServicePanel({ service, flip }: { service: Service; flip: boolean }) {
                 fill
                 sizes="(min-width: 64rem) 58vw, 100vw"
                 className="object-cover"
+                style={{ objectPosition: service.image.position }}
               />
               <div className="absolute inset-0 bg-linear-to-t from-base-0/70 via-transparent to-base-0/30" />
               <div className="absolute inset-0 tread-mask bg-accent/6 mix-blend-screen" />

@@ -330,7 +330,6 @@ export function InquiryForm() {
                 if (v === "emergency") track("form_step", { step: "emergency_path", index: 0, emergency: true });
               }}
               error={errors.urgency}
-              columns={4}
             />
           </div>
         )}

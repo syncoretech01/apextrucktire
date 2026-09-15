@@ -28,8 +28,9 @@ Other scripts:
 | `pnpm render:hero` | Re-render hero poster + phone image sequence from the live 3D scene (needs `pnpm dev` running) |
 | `pnpm lighthouse` | Lighthouse mobile + desktop against a running `pnpm start` |
 | `node scripts/smoke-api.mjs` | Exercises every layer of the inquiry endpoint hardening against `pnpm dev` |
-| `node scripts/placeholders.mjs` | Regenerates the placeholder section imagery |
-| `node scripts/brand-assets.mjs` | Regenerates favicon, apple-icon and the OG image from the brand PNGs + poster |
+| `node scripts/photos.mjs` | Crops/exports the section photography from `../generated-images/` |
+| `node scripts/placeholders.mjs` | Regenerates the (superseded) placeholder section imagery |
+| `node scripts/brand-assets.mjs` | Regenerates favicon, apple-icon and the OG image from the brand PNGs + fleet photo |
 
 ## Environment
 
@@ -98,14 +99,14 @@ Everything below is clearly marked in code with `PLACEHOLDER` or lives in `src/l
 | Tire recommendations by position | `content.ts → POSITIONS` | Model names are examples — match current stock. |
 | Testimonials | `content.ts → TESTIMONIALS` | **Placeholder quotes. Replace with real, permissioned quotes before launch — never invent reviews.** |
 | Differentiators | `content.ts → DIFFERENTIATORS` | |
-| Section photography | `public/images/services/*.jpg` (16:11), `public/images/why/yard.jpg` (4:5), `why/truck.jpg` (16:10), `why/detail.jpg` (1:1) | Generated dark placeholders. Keep the aspect ratios; dark, high-contrast, desaturated with an accent grade. Alt text lives in `content.ts` and `WhyApex.tsx`. |
+| Section photography | `public/images/services/*.jpg` (3:2, focal point via `image.position`), `public/images/why/yard-dusk.jpg` (4:5), `why/truck-unit15.jpg` (16:10), `why/detail-compartments.jpg` (1:1), `fleet-side-profile.jpg` (OG source). Filenames are content-specific on purpose — `minimumCacheTTL` is 30 days, so a new photo needs a new name | Exported by `node scripts/photos.mjs` from the full-size sources in `../generated-images/` (prompts: `IMAGE-PROMPTS.md`). Alt text lives in `content.ts` and `WhyApex.tsx`. |
 | Geo coordinates | `site.ts → address.geo` | Approximate — confirm against Google Business Profile. |
 | Social profiles | `site.ts → sameAs` | Empty array → omitted from schema until filled. |
 | Shop hours | `site.ts → hours`, `SiteFooter.tsx`, `JsonLd.tsx` | Keep the three in sync. |
 | Service-area cities / corridor | `site.ts → serviceArea`, `ServiceArea.tsx → CITIES` | The map is a stylized diagram, not survey data. |
 | Hero headline / lead | `components/hero/Hero.tsx` | Display face is an uppercase-only subset — see Fonts. |
 | Logo | `public/brand/*` → `components/ui/Logo.tsx`, `app/icon.png`, `app/apple-icon.png`, `app/favicon.ico` | The brand PNGs are used unchanged; only resized. |
-| OG image | `public/og.png` via `node scripts/brand-assets.mjs` | |
+| OG image | `public/og-fleet.png` via `node scripts/brand-assets.mjs` | Rename when the photo changes (social scrapers cache by URL). |
 | Email templates | `lib/server/email.ts` | |
 | security.txt expiry | `public/.well-known/security.txt` | Bump `Expires` yearly. |
 

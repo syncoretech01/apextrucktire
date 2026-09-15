@@ -14,7 +14,7 @@ export function JsonLd() {
     url: SITE.url,
     telephone: SITE.phone.primary.e164,
     email: SITE.email.display,
-    image: `${SITE.url}/og.png`,
+    image: `${SITE.url}/og-fleet.png`,
     logo: `${SITE.url}/brand/apex-icon-on-dark-1024.png`,
     priceRange: "$$",
     currenciesAccepted: "USD",
