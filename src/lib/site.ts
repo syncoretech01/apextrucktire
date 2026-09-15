@@ -2,11 +2,31 @@
  * Single source of truth for NAP (name, address, phone) and business facts.
  * Every phone/email/address on the site reads from here — never hardcode.
  */
+const PRODUCTION_URL = "https://www.apextrucktire.com";
+
+/**
+ * NEXT_PUBLIC_SITE_URL when it is a valid absolute URL, else the production
+ * domain. An empty or malformed value (e.g. an imported .env.example) must
+ * never reach `new URL()` in layout metadata — that fails the build.
+ * Trailing slashes are stripped so `${SITE.url}/path` never doubles up.
+ */
+function resolveSiteUrl(): string {
+  const raw = (process.env.NEXT_PUBLIC_SITE_URL ?? "").trim();
+  if (!raw) return PRODUCTION_URL;
+  try {
+    const u = new URL(raw);
+    if (u.protocol !== "https:" && u.protocol !== "http:") return PRODUCTION_URL;
+    return u.origin + u.pathname.replace(/\/+$/, "");
+  } catch {
+    return PRODUCTION_URL;
+  }
+}
+
 export const SITE = {
   name: "Apex Truck Tire",
   legalName: "Apex Truck Tire",
   tagline: "24/7 commercial truck roadside, tire sales and on-site installation — Inland Empire",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.apextrucktire.com",
+  url: resolveSiteUrl(),
   phone: {
     primary: { display: "(877) 512-0301", e164: "+18775120301", href: "tel:+18775120301" },
     local: { display: "(909) 259-2692", e164: "+19092592692", href: "tel:+19092592692" },
